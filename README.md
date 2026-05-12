@@ -1,1 +1,1 @@
-# lecture-2026-ise2-propositional-logic
+# lecture-2026-is2-structured-argumentation

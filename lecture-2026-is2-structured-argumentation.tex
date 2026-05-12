@@ -1,0 +1,165 @@
+%! Author = matteomagnini
+%! Date = 06/05/26
+
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{tikz}
+
+\title{
+    Intelligent System 2\\
+    Tutorial week 12: Structured Argumentation
+}
+
+\author{
+    Matteo Magnini\\
+    \href{mailto:matteo.magnini@uni.lu}{matteo.magnini@uni.lu}
+}
+
+\date{
+    13 May, 2026
+}
+
+\begin{document}
+
+\maketitle
+
+\section{Exercises}
+
+\subsection{Exercise 1: Formalizing a Knowledge Base}
+
+Consider the following scenario:
+
+\begin{itemize}
+    \item The road looks wet.
+    \item If the road looks wet, then typically the road is wet.
+    \item If the road is wet, then typically driving is dangerous.
+    \item There is a mirage effect.
+    \item If there is a mirage effect, then typically the road is not wet.
+\end{itemize}
+
+Use the atoms:
+
+\[
+roadLooksWet,
+roadWet,
+dangerous,
+mirage
+\]
+
+\begin{enumerate}
+    \item Identify:
+    \begin{itemize}
+        \item facts
+        \item strict rules
+        \item defeasible rules
+    \end{itemize}
+
+    \item Write the knowledge base:
+    \[
+    K = (R_S,R_D)
+    \]
+\end{enumerate}
+
+\subsection{Exercise 2: Building Arguments}
+
+Using the knowledge base from Exercise 1:
+
+\begin{enumerate}
+    \item Construct the arguments:
+
+    \[
+    A_1 = [roadLooksWet]
+    \]
+
+    \[
+    A_2 = [A_1] \Rightarrow roadWet
+    \]
+
+    \[
+    A_3 = [mirage] \Rightarrow \neg roadWet
+    \]
+
+    \[
+    A_4 = [A_2] \Rightarrow dangerous
+    \]
+
+    \item For each argument specify:
+    \begin{itemize}
+        \item conclusion
+        \item subarguments
+        \item top rule
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Exercise 3: Computing Attacks}
+
+Consider the arguments from Exercise 2.
+
+\begin{enumerate}
+    \item Which arguments rebut each other?
+
+    \item Which attacks propagate to superarguments?
+
+    \item Draw the abstract argumentation framework.
+
+    \item Is:
+    \[
+    \{A_3,A_4\}
+    \]
+    conflict-free?
+\end{enumerate}
+
+\subsection{Exercise 4: Weakest Link and Last Link}
+
+Suppose:
+
+\[
+str(r_1)=1
+\]
+
+\[
+str(r_2)=3
+\]
+
+where:
+
+\[
+r_1: roadLooksWet \Rightarrow roadWet
+\]
+
+\[
+r_2: roadWet \Rightarrow dangerous
+\]
+
+Consider:
+
+\[
+A=[roadLooksWet] \Rightarrow roadWet
+\]
+
+\[
+B=[A] \Rightarrow dangerous
+\]
+
+\begin{enumerate}
+    \item Compute the strength of:
+    \[
+    A
+    \]
+    and
+    \[
+    B
+    \]
+    using:
+    \begin{itemize}
+        \item Weakest Link
+        \item Last Link
+    \end{itemize}
+
+    \item Which principle gives more importance to the final rule?
+\end{enumerate}
+
+\end{document}
