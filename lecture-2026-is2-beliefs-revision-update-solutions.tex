@@ -1,0 +1,197 @@
+%! Author = matteomagnini
+%! Date = 18/03/26
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{my-acronyms}
+\usepackage{hyperref}
+
+\title{
+    Intelligent System 2\\
+    Tutorial week 5: Beliefs revision and update
+}
+
+\author{
+    Matteo Magnini\\
+    \href{mailto:matteo.magnini@uni.lu}{matteo.magnini@uni.lu}
+}
+
+\date{
+    19 March, 2026
+}
+
+% Document
+\begin{document}
+
+    \maketitle
+
+    \section{Solutions}\label{sec:solutions}
+
+    \subsection{Solution to Tweety}
+
+    Let the propositional variables be:
+    \[
+    b = \text{Tweety is a bird}, \quad
+    p = \text{Tweety is a penguin}, \quad
+    f = \text{Tweety flies}
+    \]
+
+    The initial belief state is:
+    \[
+    T = Cn(\{b \rightarrow f,\; p \rightarrow b,\; p\})
+    \]
+
+    From $T$ we derive:
+    \[
+    T \vdash b \quad \text{and} \quad T \vdash f
+    \]
+
+    We now learn:
+    \[
+    A = \neg f
+    \]
+
+    Since:
+    \[
+    T \vdash f \quad \Rightarrow \quad T \vdash \neg A
+    \]
+    this is a \textbf{non-trivial belief revision}.
+
+    \paragraph{Revision step (AGM intuition).}
+    We must remove (at least) one formula responsible for deriving $f$.
+
+    The conflict comes from:
+    \[
+    b \rightarrow f
+    \]
+
+    We keep:
+    \[
+    p \rightarrow b, \quad p
+    \]
+
+    Thus, a maximal consistent subset not implying $f$ is:
+    \[
+    T' = Cn(\{p \rightarrow b,\; p\})
+    \]
+
+    Now expand with $\neg f$:
+    \[
+    T \star \neg f = Cn(\{p \rightarrow b,\; p,\; \neg f\})
+    \]
+
+    \paragraph{Result.}
+    \[
+    T \star \neg f \vdash p \wedge b \wedge \neg f
+    \]
+
+    \textbf{Interpretation:}
+    Tweety is still a penguin and a bird, but we no longer believe that birds always fly.
+
+    \subsection{Solution to The Ring}
+
+    Let the propositional variables be:
+    \[
+    u = \text{the Ring has been used}, \quad
+    s = \text{Sauron knows the location}, \quad
+    n = \text{a Nazg\^ul knows the location}
+    \]
+
+    The initial belief state includes:
+
+    \[
+    T = Cn(\{
+    \neg [g]u \wedge \neg [g]\neg u,\;
+    [g](u \rightarrow s),\;
+    [g](n \rightarrow s)
+    \})
+    \]
+
+    \paragraph{Event.}
+    Frodo uses the Ring:
+    \[
+    A = u
+    \]
+
+    This is a \textbf{belief update} (world change), not a revision.
+
+    \paragraph{State-based update (KM semantics).}
+
+    A state is a valuation over $\{u, s, n\}$.
+
+    Initial possible worlds:
+    \[
+    Mod(T) = \{ s_1, s_2 \}
+    \]
+    where:
+    \[
+    s_1 = \{\neg u, \neg s, \neg n\}, \quad
+    s_2 = \{\neg u, s, n\}
+    \]
+
+    We now update each state with $A = u$.
+
+    From $s_1$:
+    \[
+    s_1' = \{u, \neg s, \neg n\}
+    \]
+
+    From $s_2$:
+    \[
+    s_2' = \{u, s, n\}
+    \]
+
+    Thus:
+    \[
+    Mod(T \diamond u) = \{ s_1', s_2' \}
+    \]
+
+    \paragraph{Closure under known implications.}
+
+    From $[g](u \rightarrow s)$ and $u$, we obtain $s$ in all worlds.
+
+    Thus:
+    \[
+    s_1' \rightarrow \{u, s, \neg n\}
+    \]
+
+    Final states:
+    \[
+    \{ \{u, s, \neg n\},\; \{u, s, n\} \}
+    \]
+
+    \paragraph{Resulting beliefs.}
+
+    \[
+    T \diamond u \vdash u \wedge s
+    \]
+
+    but:
+    \[
+    T \diamond u \nvdash n \quad \text{and} \quad T \diamond u \nvdash \neg n
+    \]
+
+    \paragraph{Epistemic consequences.}
+
+    \[
+    [g]u \quad \text{and} \quad [g]s
+    \]
+
+    but:
+    \[
+    \neg [g]n \wedge \neg [g]\neg n
+    \]
+
+    \textbf{Interpretation:}
+    After the update:
+    \begin{itemize}
+        \item Gandalf knows that the Ring has been used.
+        \item Gandalf knows that Sauron knows the location.
+        \item Gandalf does not know whether a Nazg\^ul knows it.
+    \end{itemize}
+
+\end{document}

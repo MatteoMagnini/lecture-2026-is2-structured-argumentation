@@ -1,0 +1,1 @@
+# lecture-2026-ise2-propositional-logic

@@ -1,0 +1,58 @@
+%! Author = matteomagnini
+%! Date = 18/03/26
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{my-acronyms}
+\usepackage{hyperref}
+
+\title{
+    Intelligent System 2\\
+    Tutorial week 5: Beliefs revision and update
+}
+
+\author{
+    Matteo Magnini\\
+    \href{mailto:matteo.magnini@uni.lu}{matteo.magnini@uni.lu}
+}
+
+\date{
+    19 March, 2026
+}
+
+% Document
+\begin{document}
+
+    \maketitle
+
+    \section{Exercises}\label{sec:exercises}
+
+    \subsection{Tweety}
+
+    \begin{itemize}
+        \item It is the case that birds fly.
+        \item Penguins are birds.
+        \item Tweety is a penguin.
+    \end{itemize}
+
+    How do we revise our knowledge if we learn that Tweety does \emph{not} fly?
+
+    \subsection{The Ring}
+
+    Consider the following scenario:
+
+    \begin{itemize}
+        \item Gandalf does not know if the Ring has been used.
+        \item Gandalf knows that if the ring has been used, then Sauron knows the location of the Ring.
+        \item Gandalf also knows that if a Nazgûl knows the location of the Ring, then Sauron also knows the location of the Ring.
+    \end{itemize}
+
+    Frodo uses the Ring to escape the Nazgûl.
+
+    What is the new knowledge base after this event, according to the belief update semantics?
+
+\end{document}
