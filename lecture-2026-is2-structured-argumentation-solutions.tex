@@ -1,18 +1,16 @@
 %! Author = matteomagnini
-%! Date = 18/03/26
+%! Date = 06/05/26
 
-% Preamble
 \documentclass[11pt]{article}
 
-% Packages
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{my-acronyms}
 \usepackage{hyperref}
+\usepackage{tikz}
 
 \title{
     Intelligent System 2\\
-    Tutorial week 5: Beliefs revision and update
+    Tutorial week 12: Structured Argumentation
 }
 
 \author{
@@ -21,177 +19,350 @@
 }
 
 \date{
-    19 March, 2026
+    13 May, 2026
 }
 
-% Document
 \begin{document}
 
-    \maketitle
+\maketitle
 
-    \section{Solutions}\label{sec:solutions}
+\section{Solutions}
 
-    \subsection{Solution to Tweety}
+\subsection{Exercise 1}
 
-    Let the propositional variables be:
+Facts:
+\[
+roadLooksWet
+\]
+\[
+mirage
+\]
+
+Strict rules:
+\[
+R_S = \emptyset
+\]
+
+Defeasible rules:
+\[
+r_1: roadLooksWet \Rightarrow roadWet
+\]
+\[
+r_2: roadWet \Rightarrow dangerous
+\]
+\[
+r_3: mirage \Rightarrow \neg roadWet
+\]
+
+Therefore:
+\[
+R_D = \{r_1,r_2,r_3\}
+\]
+
+The knowledge base is:
+\[
+K=(R_S,R_D)
+\]
+
+\subsection{Exercise 2}
+
+\textbf{Argument $A_1$}
+
+\[
+A_1=[roadLooksWet]
+\]
+
+\begin{itemize}
+    \item conclusion:
     \[
-    b = \text{Tweety is a bird}, \quad
-    p = \text{Tweety is a penguin}, \quad
-    f = \text{Tweety flies}
+    cnl(A_1)=roadLooksWet
     \]
 
-    The initial belief state is:
+    \item subarguments:
     \[
-    T = Cn(\{b \rightarrow f,\; p \rightarrow b,\; p\})
+    sub(A_1)=\{A_1\}
     \]
 
-    From $T$ we derive:
+    \item top rule:
+    none (ordinary premise)
+\end{itemize}
+
+\bigskip
+
+\textbf{Argument $A_2$}
+
+Using:
+\[
+r_1: roadLooksWet \Rightarrow roadWet
+\]
+
+we obtain:
+\[
+A_2=[A_1]\Rightarrow roadWet
+\]
+
+\begin{itemize}
+    \item conclusion:
     \[
-    T \vdash b \quad \text{and} \quad T \vdash f
+    cnl(A_2)=roadWet
     \]
 
-    We now learn:
+    \item subarguments:
     \[
-    A = \neg f
+    sub(A_2)=\{A_1,A_2\}
     \]
 
-    Since:
-    \[
-    T \vdash f \quad \Rightarrow \quad T \vdash \neg A
-    \]
-    this is a \textbf{non-trivial belief revision}.
+    \item top rule:
+    defeasible
+\end{itemize}
 
-    \paragraph{Revision step (AGM intuition).}
-    We must remove (at least) one formula responsible for deriving $f$.
+\bigskip
 
-    The conflict comes from:
-    \[
-    b \rightarrow f
-    \]
+\textbf{Argument $A_3$}
 
-    We keep:
-    \[
-    p \rightarrow b, \quad p
-    \]
+Using:
+\[
+r_3: mirage \Rightarrow \neg roadWet
+\]
 
-    Thus, a maximal consistent subset not implying $f$ is:
-    \[
-    T' = Cn(\{p \rightarrow b,\; p\})
-    \]
+we obtain:
+\[
+A_3=[mirage]\Rightarrow \neg roadWet
+\]
 
-    Now expand with $\neg f$:
+\begin{itemize}
+    \item conclusion:
     \[
-    T \star \neg f = Cn(\{p \rightarrow b,\; p,\; \neg f\})
+    cnl(A_3)=\neg roadWet
     \]
 
-    \paragraph{Result.}
+    \item subarguments:
     \[
-    T \star \neg f \vdash p \wedge b \wedge \neg f
+    sub(A_3)=\{A_3\}
     \]
 
-    \textbf{Interpretation:}
-    Tweety is still a penguin and a bird, but we no longer believe that birds always fly.
+    \item top rule:
+    defeasible
+\end{itemize}
 
-    \subsection{Solution to The Ring}
+\bigskip
 
-    Let the propositional variables be:
+\textbf{Argument $A_4$}
+
+Using:
+\[
+r_2: roadWet \Rightarrow dangerous
+\]
+
+and argument $A_2$:
+\[
+A_4=[A_2]\Rightarrow dangerous
+\]
+
+\begin{itemize}
+    \item conclusion:
     \[
-    u = \text{the Ring has been used}, \quad
-    s = \text{Sauron knows the location}, \quad
-    n = \text{a Nazg\^ul knows the location}
+    cnl(A_4)=dangerous
     \]
 
-    The initial belief state includes:
-
+    \item subarguments:
     \[
-    T = Cn(\{
-    \neg [g]u \wedge \neg [g]\neg u,\;
-    [g](u \rightarrow s),\;
-    [g](n \rightarrow s)
-    \})
+    sub(A_4)=\{A_1,A_2,A_4\}
     \]
 
-    \paragraph{Event.}
-    Frodo uses the Ring:
+    \item top rule:
+    defeasible
+\end{itemize}
+
+\subsection{Exercise 3}
+
+Recall:
+\begin{itemize}
+    \item a rebut attack occurs when two arguments conclude opposite literals
+    \item attacks propagate to superarguments
+\end{itemize}
+
+\bigskip
+
+We have:
+\[
+cnl(A_2)=roadWet
+\]
+and
+\[
+cnl(A_3)=\neg roadWet
+\]
+
+Therefore:
+\[
+A_2 \to A_3
+\]
+and
+\[
+A_3 \to A_2
+\]
+
+These are rebut attacks.
+
+\bigskip
+
+Now consider propagation.
+
+Since:
+\[
+A_2 \in sub(A_4)
+\]
+
+every attack against $A_2$ propagates to $A_4$.
+
+Hence:
+\[
+A_3 \to A_4
+\]
+
+\bigskip
+
+The abstract argumentation framework is:
+
+\begin{center}
+\begin{tikzpicture}
+\node[circle,draw] (a2) at (0,0) {$A_2$};
+\node[circle,draw] (a3) at (3,0) {$A_3$};
+\node[circle,draw] (a4) at (1.5,-2) {$A_4$};
+
+\path[->]
+(a2) edge[bend left=15] (a3)
+(a3) edge[bend left=15] (a2)
+(a3) edge (a4);
+\end{tikzpicture}
+\end{center}
+
+\bigskip
+
+Is:
+\[
+\{A_3,A_4\}
+\]
+conflict-free?
+
+No.
+
+Indeed:
+\[
+A_3 \to A_4
+\]
+
+Therefore the set is not conflict-free.
+
+\subsection{Exercise 4}
+
+We are given:
+\[
+str(r_1)=1
+\]
+\[
+str(r_2)=3
+\]
+
+with:
+\[
+r_1: roadLooksWet \Rightarrow roadWet
+\]
+\[
+r_2: roadWet \Rightarrow dangerous
+\]
+
+Arguments:
+\[
+A=[roadLooksWet]\Rightarrow roadWet
+\]
+\[
+B=[A]\Rightarrow dangerous
+\]
+
+\bigskip
+
+\textbf{Weakest Link}
+
+Under Weakest Link, the strength of an argument is the minimum strength among all defeasible rules used in the argument.
+
+\bigskip
+
+Argument $A$ uses only:
+\[
+r_1
+\]
+
+Therefore:
+\[
+str_{WL}(A)=1
+\]
+
+Argument $B$ uses:
+\[
+r_1,r_2
+\]
+
+Hence:
+\[
+str_{WL}(B)=\min(1,3)=1
+\]
+
+\bigskip
+
+\textbf{Last Link}
+
+Under Last Link, only the last applied defeasible rule matters.
+
+\bigskip
+
+For:
+\[
+A
+\]
+
+the last rule is:
+\[
+r_1
+\]
+
+thus:
+\[
+str_{LL}(A)=1
+\]
+
+For:
+\[
+B
+\]
+
+the last rule is:
+\[
+r_2
+\]
+
+thus:
+\[
+str_{LL}(B)=3
+\]
+
+\bigskip
+
+Therefore:
+\begin{itemize}
+    \item Weakest Link gives:
     \[
-    A = u
+    str(A)=1,\quad str(B)=1
     \]
 
-    This is a \textbf{belief update} (world change), not a revision.
-
-    \paragraph{State-based update (KM semantics).}
-
-    A state is a valuation over $\{u, s, n\}$.
-
-    Initial possible worlds:
+    \item Last Link gives:
     \[
-    Mod(T) = \{ s_1, s_2 \}
+    str(A)=1,\quad str(B)=3
     \]
-    where:
-    \[
-    s_1 = \{\neg u, \neg s, \neg n\}, \quad
-    s_2 = \{\neg u, s, n\}
-    \]
+\end{itemize}
 
-    We now update each state with $A = u$.
+\bigskip
 
-    From $s_1$:
-    \[
-    s_1' = \{u, \neg s, \neg n\}
-    \]
-
-    From $s_2$:
-    \[
-    s_2' = \{u, s, n\}
-    \]
-
-    Thus:
-    \[
-    Mod(T \diamond u) = \{ s_1', s_2' \}
-    \]
-
-    \paragraph{Closure under known implications.}
-
-    From $[g](u \rightarrow s)$ and $u$, we obtain $s$ in all worlds.
-
-    Thus:
-    \[
-    s_1' \rightarrow \{u, s, \neg n\}
-    \]
-
-    Final states:
-    \[
-    \{ \{u, s, \neg n\},\; \{u, s, n\} \}
-    \]
-
-    \paragraph{Resulting beliefs.}
-
-    \[
-    T \diamond u \vdash u \wedge s
-    \]
-
-    but:
-    \[
-    T \diamond u \nvdash n \quad \text{and} \quad T \diamond u \nvdash \neg n
-    \]
-
-    \paragraph{Epistemic consequences.}
-
-    \[
-    [g]u \quad \text{and} \quad [g]s
-    \]
-
-    but:
-    \[
-    \neg [g]n \wedge \neg [g]\neg n
-    \]
-
-    \textbf{Interpretation:}
-    After the update:
-    \begin{itemize}
-        \item Gandalf knows that the Ring has been used.
-        \item Gandalf knows that Sauron knows the location.
-        \item Gandalf does not know whether a Nazg\^ul knows it.
-    \end{itemize}
+Last Link gives more importance to the final inference step.
 
 \end{document}
